@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import "./App.css";
+import requireNoAuth from "./common/hoc/requireNoAuth";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { APP_URL } from "./config";
+import {
+  AssignmentDetails,
+  Assignments,
+  Dashboard,
+  Login,
+  Signup,
+} from "./pages";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path={APP_URL.SIGNUP} element={requireNoAuth(Signup)} />
+        <Route path={APP_URL.LOGIN} element={requireNoAuth(Login)} />
+
+        <Route path={APP_URL.DASHBOARD} element={<Dashboard />} />
+        <Route path={APP_URL.ASSIGNMENTS} element={<Assignments />} />
+        <Route
+          path={APP_URL.ASSIGNMENT_DETAILS}
+          element={<AssignmentDetails />}
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
