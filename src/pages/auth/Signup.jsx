@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { APP_URL } from "../../config";
+import { registerUser } from "../../redux/slices/userSlice";
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
@@ -41,23 +42,20 @@ const Signup = () => {
   const {
     handleSubmit,
     reset,
-    control,
-    trigger,
-    getValues,
     watch,
     register,
     formState: { errors },
-    setValue,
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
   const handleSignup = (data) => {
     setLoading(true);
     setTimeout(() => {
+      dispatch(registerUser({ ...data }));
       navigate(APP_URL.LOGIN);
       console.log("Data -->", data);
       reset();
       setLoading(false);
-    }, 3000);
+    }, 2000);
   };
 
   return (

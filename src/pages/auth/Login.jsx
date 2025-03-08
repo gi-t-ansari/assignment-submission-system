@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { APP_URL } from "../../config";
+import { loginUser, userList } from "../../redux/slices/userSlice";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const allUsers = useSelector(userList);
+  console.log("All Users -->", allUsers);
 
   const navigate = useNavigate();
 
@@ -35,23 +38,28 @@ const Login = () => {
   const {
     handleSubmit,
     reset,
-    control,
-    trigger,
-    getValues,
     watch,
     register,
     formState: { errors },
-    setValue,
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
-  const handleSignup = (data) => {
+  const handleLogin = (data) => {
     setLoading(true);
     setTimeout(() => {
-      navigate(APP_URL.DASHBOARD);
-      console.log("Data -->", data);
-      reset();
-      setLoading(false);
-    }, 3000);
+      const findUser = allUsers?.find((ele) => ele?.email === data?.email);
+      if (!findUser) {
+        alert("User not found. Please Signup.");
+        setLoading(false);
+      } else if (findUser?.password !== data?.password) {
+        alert("Password is incorrect.");
+        setLoading(false);
+      } else {
+        dispatch(loginUser(data));
+        navigate(APP_URL.DASHBOARD);
+        reset();
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
@@ -59,7 +67,7 @@ const Login = () => {
       <h1 className="uppercase text-center font-bold text-xl sm:text-2xl md:text-3xl mb-6">
         Login
       </h1>
-      <form className="w-full" onSubmit={handleSubmit(handleSignup)}>
+      <form className="w-full" onSubmit={handleSubmit(handleLogin)}>
         <div className="w-full h-fit mb-4">
           <div className="w-full h-fit">
             <input

@@ -10,6 +10,7 @@ import {
   Login,
   Signup,
 } from "./pages";
+import { requireAuth } from "./common";
 
 function App() {
   return (
@@ -18,11 +19,11 @@ function App() {
         <Route path={APP_URL.SIGNUP} element={requireNoAuth(Signup)} />
         <Route path={APP_URL.LOGIN} element={requireNoAuth(Login)} />
 
-        <Route path={APP_URL.DASHBOARD} element={<Dashboard />} />
-        <Route path={APP_URL.ASSIGNMENTS} element={<Assignments />} />
+        <Route path={APP_URL.DASHBOARD} element={requireAuth(Dashboard)} />
+        <Route path={APP_URL.ASSIGNMENTS} element={requireAuth(Assignments)} />
         <Route
           path={APP_URL.ASSIGNMENT_DETAILS}
-          element={<AssignmentDetails />}
+          element={requireAuth(AssignmentDetails)}
         />
       </Routes>
     </BrowserRouter>

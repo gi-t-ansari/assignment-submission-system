@@ -8,13 +8,13 @@ import {
 
 export const MENU_ITEMS = [
   {
-    name: "dashboard",
+    name: "Dashboard",
     url: APP_URL.DASHBOARD,
     icon: MdOutlineSpaceDashboard,
     isSelected: MdSpaceDashboard,
   },
   {
-    name: "assignments",
+    name: "Assignments",
     url: APP_URL.ASSIGNMENTS,
     icon: MdOutlineAssignment,
     isSelected: MdAssignment,
