@@ -15,7 +15,7 @@ const persistedReducer = persistReducer(persistConfig, userReducer);
 export const store = configureStore({
   reducer: {
     user: persistedReducer,
-    assignment: assignmentReducer,
+    assignments: assignmentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -6,9 +6,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { APP_URL } from "../../config";
 import { registerUser } from "../../redux/slices/userSlice";
+import { Toast } from "../../components";
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
 
   const navigate = useNavigate();
 
@@ -51,6 +53,7 @@ const Signup = () => {
     setLoading(true);
     setTimeout(() => {
       dispatch(registerUser({ ...data }));
+      setToast({ message: "Signup successful!", type: "success" });
       navigate(APP_URL.LOGIN);
       console.log("Data -->", data);
       reset();
@@ -60,6 +63,13 @@ const Signup = () => {
 
   return (
     <div className="bg-gray-200 p-2 sm:p-6 rounded-2xl shadow-xl w-md sm:max-w-md md:max-w-lg">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <h1 className="uppercase text-center font-bold text-xl sm:text-2xl md:text-3xl mb-6">
         Signup
       </h1>

@@ -6,9 +6,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { APP_URL } from "../../config";
 import { loginUser, userList } from "../../redux/slices/userSlice";
+import { Toast } from "../../components";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
   const allUsers = useSelector(userList);
   console.log("All Users -->", allUsers);
 
@@ -48,13 +50,14 @@ const Login = () => {
     setTimeout(() => {
       const findUser = allUsers?.find((ele) => ele?.email === data?.email);
       if (!findUser) {
-        alert("User not found. Please Signup.");
+        setToast({ message: "User not found. Please Signup.", type: "error" });
         setLoading(false);
       } else if (findUser?.password !== data?.password) {
-        alert("Password is incorrect.");
+        setToast({ message: "Password is incorrect.", type: "error" });
         setLoading(false);
       } else {
         dispatch(loginUser(data));
+        setToast({ message: "Login successful!", type: "success" });
         navigate(APP_URL.DASHBOARD);
         reset();
         setLoading(false);
@@ -64,6 +67,13 @@ const Login = () => {
 
   return (
     <div className="bg-gray-200 p-2 sm:p-6 rounded-2xl shadow-xl w-md sm:max-w-md md:max-w-lg">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <h1 className="uppercase text-center font-bold text-xl sm:text-2xl md:text-3xl mb-6">
         Login
       </h1>

@@ -9,7 +9,7 @@ const assignmentSlice = createSlice({
   initialState,
   reducers: {
     listAllAssignments: (state, action) => {
-      state.assignments = action.payload;
+      state.assignments = [...action.payload];
     },
   },
 });
